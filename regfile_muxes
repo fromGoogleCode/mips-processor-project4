@@ -1,0 +1,70 @@
+module mux_2to1(d,s,o);
+input [1:0] d;
+input s;
+output o;
+wire [2:0] t;
+
+assign t[0] = ~s&d[0];
+assign t[1] = s&d[1];
+assign t[2] = t[0]|t[1];
+assign o = t[2];
+
+endmodule
+
+module mux_4to1(d,s,o); 
+input [3:0] d; 
+input [1:0] s; 
+output o; 
+wire [1:0] t;  
+
+mux_2to1(d[1:0],s[0],t[0]);
+mux_2to1(d[3:2],s[0],t[1]);
+mux_2to1(t[1:0],s[1],o);
+
+endmodule
+
+module mux_8to1(d,s,o);
+input [7:0] d;
+input [2:0] s;
+output o;
+wire [1:0] t;
+
+mux_4to1(d[3:0],s[1:0],t[0]);
+mux_4to1(d[7:4],s[1:0],t[1]);
+mux_2to1(t[1:0],s[2],o);
+
+endmodule
+
+module mux_16to1(d,s,o);
+input [15:0] d;
+input [3:0] s;
+output o;
+wire [1:0] t;
+
+mux_8to1(d[7:0],s[2:0],t[0]);
+mux_8to1(d[15:8],s[2:0],t[1]);
+mux_2to1(t[1:0],s[3],o);
+
+endmodule
+
+module mux_32to1(d,s,o);
+input [31:0] d;
+input [4:0] s;
+output o;
+wire [1:0] t;
+
+mux_16to1(d[15:0],s[3:0],t[0]);
+mux_16to1(d[31:16],s[3:0],t[1]);
+mux_2to1(t[1:0],s[4],o);
+
+endmodule
+
+module regfile(clk, wc, ra1, ra2, rd1, rd2, wa, wd);
+input clk, wc;
+input [4:0] ra1, ra2, wa;
+input [31:0] wd;
+output [31:0] rd1, rd2;
+
+reg [7:0] rf[31:0]; //8bit register rf[0] ... rf[31] 
+
+
