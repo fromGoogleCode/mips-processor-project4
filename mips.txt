@@ -1,0 +1,27 @@
+# t0 = i , s0 = sum , s1 = m array
+# tn = temp, t9 = 16
+
+lw $t0, $zero
+lw $t1, $zero
+lw $t9, $zero
+add $t9, $t9, 16
+
+Loop1:
+beq $t9, $t0, Next		# if i == 16 goto Next
+add $t0, $t0, 1			# i++
+sw $t0, $t1($s1)		# m[i] = i
+add $t1, $t1, 4	
+j Loop1
+
+Next:
+lw $t0, $zero
+lw $s0, $zero
+
+Loop2:
+beq $t9, $t0, Exit		# if i == 16 goto Exit
+add $t0, $t0, 1			# i++
+add $s0, $s0, $t0		# sum += i
+j Loop2
+
+Exit:
+sw $s0, 68($s1)			# store m[17] (4*17 = 68)
